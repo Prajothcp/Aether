@@ -1,0 +1,2397 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#070b14">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AetherDrop">
+    <title>AetherDrop — 100% Offline Cross-Platform & APK File Drop</title>
+
+    <!-- =========================================================================
+         ZERO EXTERNAL CDN DEPENDENCIES:
+         100% Self-Contained Embedded CSS Utility & Design System for APK WebView
+         ========================================================================= -->
+    <style>
+        :root {
+            --bg-core: #070b14;
+            --bg-surface: #0f172a;
+            --bg-card: rgba(15, 23, 42, 0.92);
+            --border-subtle: rgba(51, 65, 85, 0.65);
+            --sky-400: #38bdf8;
+            --sky-500: #0ea5e9;
+            --emerald-400: #34d399;
+            --emerald-500: #10b981;
+            --rose-400: #fb7185;
+            --rose-500: #f43f5e;
+            --amber-400: #fbbf24;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at 50% 45%, #111b30 0%, #090d18 70%, #05070d 100%);
+            color: var(--text-main);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        code, pre, textarea.mono, .font-mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        /* Layout & Flex/Grid Utilities */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .inline-flex { display: inline-flex; }
+        .grid { display: grid; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-end { justify-content: flex-end; }
+        .flex-1 { flex: 1 1 0%; }
+        .shrink-0 { flex-shrink: 0; }
+        .min-w-0 { min-width: 0; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .pointer-events-none { pointer-events: none; }
+        .pointer-events-auto { pointer-events: auto; }
+        . truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .overflow-y-auto { overflow-y: auto; }
+        .overflow-hidden { overflow: hidden; }
+
+        /* Gaps */
+        .gap-1 { gap: 0.25rem; }
+        .gap-1\.5 { gap: 0.375rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-2\.5 { gap: 0.625rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+
+        /* Header & Footer Bars */
+        .app-header {
+            position: relative;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1rem;
+            gap: 0.5rem;
+        }
+        @media (min-width: 640px) {
+            .app-header { padding: 1.15rem 2rem; }
+        }
+
+        .app-footer {
+            position: relative;
+            z-index: 30;
+            padding: 0.5rem 1rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Buttons & Badges */
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+            font: inherit;
+            transition: all 0.18s ease;
+        }
+        button:active { transform: scale(0.96); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.5rem 0.85rem;
+            border-radius: 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.28);
+        }
+        .btn-primary:hover { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
+
+        .btn-emerald {
+            background: rgba(16, 185, 129, 0.16);
+            color: #6ee7b7;
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+        .btn-emerald:hover { background: rgba(16, 185, 129, 0.26); }
+
+        .btn-amber {
+            background: rgba(245, 158, 11, 0.16);
+            color: #fcd34d;
+            border-color: rgba(245, 158, 11, 0.38);
+        }
+        .btn-amber:hover { background: rgba(245, 158, 11, 0.26); }
+
+        .btn-surface {
+            background: rgba(30, 41, 59, 0.78);
+            color: #cbd5e1;
+            border-color: rgba(71, 85, 105, 0.55);
+        }
+        .btn-surface:hover { background: rgba(51, 65, 85, 0.85); color: #fff; }
+
+        .btn-danger {
+            background: rgba(244, 63, 94, 0.16);
+            color: #fda4af;
+            border-color: rgba(244, 63, 94, 0.35);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 9999px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            background: rgba(100, 116, 139, 0.16);
+            color: #94a3b8;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        .status-pill.connected {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        /* Radar Stage */
+        .radar-stage {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .radar-container {
+            position: relative;
+            width: 330px;
+            height: 330px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        @media (min-width: 640px) {
+            .radar-container { width: 490px; height: 490px; }
+        }
+        @media (min-width: 768px) {
+            .radar-container { width: 560px; height: 560px; }
+        }
+
+        .radar-sweep {
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            background: conic-gradient(from 0deg, transparent 70%, rgba(56, 189, 248, 0.12) 100%);
+            animation: spinSlow 8.5s linear infinite;
+        }
+        .radar-ring {
+            position: absolute;
+            border-radius: 9999px;
+            border: 1px solid rgba(51, 65, 85, 0.48);
+        }
+        .radar-ping {
+            position: absolute;
+            width: 6rem;
+            height: 6rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(56, 189, 248, 0.32);
+            animation: radarPing 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        .radar-ping.delayed { animation-delay: 2s; }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes radarPing {
+            0% { transform: scale(0.85); opacity: 0.7; }
+            85%, 100% { transform: scale(3.8); opacity: 0; }
+        }
+
+        /* Center Hub Node */
+        .center-hub {
+            position: relative;
+            width: 6.4rem;
+            height: 6.4rem;
+            border-radius: 9999px;
+            background: #0f172a;
+            border: 2px solid rgba(56, 189, 248, 0.55);
+            box-shadow: 0 0 35px rgba(14, 165, 233, 0.18);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+        .center-hub:hover { transform: scale(1.05); border-color: #38bdf8; }
+        .center-plus-badge {
+            position: absolute;
+            right: -0.2rem;
+            bottom: -0.2rem;
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 9999px;
+            background: #0ea5e9;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Peer Nodes on Radar */
+        .peer-node {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .peer-node:hover, .peer-node.drag-target {
+            transform: translate(-50%, -50%) scale(1.09) !important;
+        }
+        .peer-avatar {
+            width: 4.1rem;
+            height: 4.1rem;
+            border-radius: 9999px;
+            background: #0f172a;
+            border: 1.5px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f8fafc;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+        }
+        .peer-node:hover .peer-avatar { border-color: #38bdf8; }
+        .peer-label-card {
+            margin-top: 0.3rem;
+            padding: 0.28rem 0.65rem;
+            border-radius: 0.75rem;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Cards & Modals */
+        .dock-card {
+            width: 100%;
+            max-width: 36rem;
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 1.1rem;
+            padding: 0.85rem 1rem;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-panel {
+            width: 100%;
+            max-width: 34rem;
+            max-height: 92vh;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 1.5rem;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65);
+            color: #f1f5f9;
+        }
+        .sub-box {
+            background: rgba(2, 6, 23, 0.75);
+            border: 1px solid rgba(30, 41, 59, 0.9);
+            border-radius: 1rem;
+            padding: 0.9rem;
+        }
+        input.text-input, textarea.text-input {
+            width: 100%;
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 0.55rem 0.75rem;
+            color: #f8fafc;
+            font-size: 0.75rem;
+            outline: none;
+        }
+        input.text-input:focus, textarea.text-input:focus {
+            border-color: #38bdf8;
+        }
+
+        .tab-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.35rem;
+            background: #020617;
+            padding: 0.25rem;
+            border-radius: 0.85rem;
+            border: 1px solid #1e293b;
+            margin: 0.75rem 0;
+        }
+        .tab-btn {
+            padding: 0.48rem 0.5rem;
+            border-radius: 0.65rem;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+        .tab-btn.active {
+            background: #0ea5e9;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+        }
+
+        /* Toast Container */
+        #toast-container {
+            position: fixed;
+            top: 4.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 80;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.45rem;
+            pointer-events: none;
+            width: 90%;
+            max-width: 24rem;
+        }
+        .toast-item {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            color: #f8fafc;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transition: all 0.25s ease;
+        }
+
+        @media (max-width: 640px) {
+            .hide-mobile { display: none !important; }
+        }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.25); border-radius: 9999px; }
+    </style>
+</head>
+<body>
+
+    <!-- Global Drag & Drop Overlay -->
+    <div id="drop-overlay" class="fixed inset-0 pointer-events-none hidden items-center justify-center" style="z-index:60; background:rgba(14,165,233,0.12); border:2px dashed #38bdf8; margin:0.75rem; border-radius:1.5rem; backdrop-filter:blur(4px);">
+        <div class="text-center">
+            <p style="font-size:1.1rem; font-weight:700; color:#38bdf8;">Drop files for offline P2P transfer</p>
+            <p style="font-size:0.75rem; color:#94a3b8; margin-top:0.25rem;">Or drop directly onto a connected peer node</p>
+        </div>
+    </div>
+
+    <!-- Top Header -->
+    <header class="app-header">
+        <div class="flex items-center gap-2.5">
+            <div style="width:2.35rem; height:2.35rem; border-radius:0.85rem; background:rgba(14,165,233,0.15); border:1px solid rgba(56,189,248,0.35); display:flex; align-items:center; justify-content:center; color:#38bdf8;">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                </svg>
+            </div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <h1 style="font-size:1rem; font-weight:700; letter-spacing:-0.02em;">AetherDrop</h1>
+                    <span id="connection-badge" class="status-pill">
+                        <span id="connection-dot" style="width:6px; height:6px; border-radius:999px; background:currentColor;"></span>
+                        <span id="connection-count-text">0 Connected</span>
+                    </span>
+                </div>
+                <p class="hide-mobile" style="font-size:0.68rem; color:#94a3b8;">Zero-CDN Offline APK Ready • Android • iOS • Windows</p>
+            </div>
+        </div>
+
+        <!-- Right Header Controls -->
+        <div class="flex items-center gap-1.5">
+            <!-- How It Connects Offline -->
+            <button id="btn-how-it-works" class="btn btn-surface" title="How Offline Hotspot Works">
+                <svg width="14" height="14" fill="none" stroke="#38bdf8" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="hide-mobile">Hotspot Guide</span>
+            </button>
+
+            <!-- Pair Real Device -->
+            <button id="btn-open-connect" class="btn btn-primary">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                </svg>
+                <span>Pair Device</span>
+            </button>
+
+            <!-- Built-in APK Builder Bundle Modal Trigger -->
+            <button id="btn-apk-builder" class="btn btn-amber" title="Generate Android APK Project Bundle">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                </svg>
+                <span>APK Builder</span>
+            </button>
+
+            <!-- Received Files Vault -->
+            <button id="btn-vault" class="btn btn-surface relative" style="padding:0.5rem 0.65rem;" title="Received Offline Files">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                </svg>
+                <span id="vault-badge" class="hidden" style="position:absolute; top:-4px; right:-4px; width:16px; height:16px; border-radius:999px; background:#0ea5e9; color:#fff; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center;">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Interactive Radar Stage -->
+    <main class="radar-stage">
+        <div class="radar-container">
+            <div class="radar-sweep"></div>
+            <div class="radar-ring" style="width:32%; height:32%;"></div>
+            <div class="radar-ring" style="width:64%; height:64%;"></div>
+            <div class="radar-ring" style="width:96%; height:96%;"></div>
+            <div class="radar-ping"></div>
+            <div class="radar-ping delayed"></div>
+        </div>
+
+        <!-- Real Connected Peers Container (Starts strictly empty) -->
+        <div id="peers-layer" class="absolute inset-0 pointer-events-none" style="z-index:20;"></div>
+
+        <!-- Center Hub (Your Device + File Selector) -->
+        <div class="relative flex flex-col items-center" style="z-index:25;">
+            <button id="center-node-btn" class="center-hub" title="Tap to select files to share">
+                <div id="my-device-icon" style="color:#38bdf8; margin-bottom:2px;"></div>
+                <span id="my-device-name" class="truncate" style="font-size:0.7rem; font-weight:700; max-width:84px;">Device</span>
+                <span id="my-device-os" class="font-mono" style="font-size:0.58rem; color:#38bdf8; text-transform:uppercase; margin-top:1px;">OS</span>
+                <div class="center-plus-badge">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="flex items-center gap-1.5" style="margin-top:0.55rem; font-size:0.7rem; color:#94a3b8;">
+                <span>You</span>
+                <span>•</span>
+                <button id="btn-rename-self" style="text-decoration:underline; color:#cbd5e1;">Rename</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Minimalist Dock -->
+    <footer class="app-footer">
+        <!-- Staged Files Bar -->
+        <div id="staged-files-bar" class="dock-card hidden" style="border-color:rgba(56,189,248,0.45);">
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div style="width:2.25rem; height:2.25rem; border-radius:0.7rem; background:rgba(14,165,233,0.15); color:#38bdf8; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <p id="staged-summary-title" class="truncate" style="font-size:0.8rem; font-weight:700;">1 file staged</p>
+                            <span id="staged-summary-size" class="font-mono" style="font-size:0.68rem; padding:0.1rem 0.4rem; background:#1e293b; border-radius:0.35rem; color:#cbd5e1;">0 KB</span>
+                        </div>
+                        <p style="font-size:0.68rem; color:#38bdf8;">Tap a connected device on the radar to beam</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button id="btn-add-more-files" class="btn btn-surface" style="padding:0.35rem 0.6rem;">+ Add</button>
+                    <button id="btn-clear-staged" class="btn btn-danger" style="padding:0.35rem 0.55rem;">Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty Radar State Card (Shown when 0 real devices are connected) -->
+        <div id="empty-radar-card" class="dock-card flex items-center justify-between gap-3" style="flex-wrap:wrap;">
+            <div class="flex items-center gap-2.5 min-w-0" style="flex:1 1 210px;">
+                <div class="hide-mobile" style="width:2.3rem; height:2.3rem; border-radius:0.75rem; background:#1e293b; color:#38bdf8; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                    </svg>
+                </div>
+                <div>
+                    <p style="font-size:0.8rem; font-weight:700;">No nearby devices connected yet</p>
+                    <p style="font-size:0.68rem; color:#94a3b8; margin-top:2px;">
+                        Turn on <span style="color:#38bdf8; font-weight:600;">Wi-Fi Hotspot</span> (no internet needed) or join the same Wi-Fi, then pair via QR or token.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+                <button id="btn-empty-apk" class="btn btn-amber">Export APK</button>
+                <button id="btn-empty-connect" class="btn btn-primary">Pair Real Device</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Hidden File Input -->
+    <input type="file" id="file-input" class="hidden" multiple>
+
+    <!-- =================================================================== -->
+    <!-- MODAL 1: REAL OFFLINE WEBRTC PAIRING (EMBEDDED QR + NATIVE SCANNER) -->
+    <!-- =================================================================== -->
+    <div id="pairing-modal" class="modal-backdrop hidden">
+        <div class="modal-panel">
+            <div class="flex items-center justify-between" style="padding-bottom:0.75rem; border-bottom:1px solid #1e293b;">
+                <div>
+                    <h3 style="font-size:0.95rem; font-weight:700;">Pair Real Device (100% Serverless Offline)</h3>
+                    <p style="font-size:0.68rem; color:#94a3b8;">Connect both devices to the same Wi-Fi or one phone's Mobile Hotspot</p>
+                </div>
+                <button id="btn-close-pairing" class="btn btn-surface" style="padding:0.35rem 0.55rem;">✕</button>
+            </div>
+
+            <div class="tab-bar">
+                <button id="tab-host" class="tab-btn active">Device A: Host (Show QR)</button>
+                <button id="tab-join" class="tab-btn">Device B: Join (Scan / Paste)</button>
+            </div>
+
+            <div class="overflow-y-auto flex-1" style=" display:flex; flex-direction:column; gap:0.85rem; font-size:0.75rem;">
+                <!-- HOST PANEL -->
+                <div id="panel-host" class="flex flex-col gap-3">
+                    <div class="sub-box flex items-center gap-3" style="flex-wrap:wrap; justify-content:center;">
+                        <div id="host-qr-box" style="width:148px; height:148px; background:#fff; border-radius:0.75rem; padding:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <span style="font-size:0.65rem; color:#475569; text-align:center;">Generating offline ICE QR...</span>
+                        </div>
+                        <div style="flex:1 1 190px;">
+                            <span class="font-mono" style="font-size:0.62rem; color:#38bdf8; font-weight:700;">STEP 1 OF 2</span>
+                            <h4 style="font-size:0.85rem; font-weight:700; margin-top:2px;">Scan this QR on Device B</h4>
+                            <p style="font-size:0.68rem; color:#94a3b8; margin-top:4px; line-height:1.4;">
+                                Open AetherDrop on Device B, select <strong>Device B: Join</strong>, and scan this QR code (or copy the Offer Token below).
+                            </p>
+                            <div class="flex gap-2" style="margin-top:0.65rem;">
+                                <button id="btn-copy-offer" class="btn btn-surface">Copy Offer Token</button>
+                                <button id="btn-regenerate-offer" class="btn btn-surface">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <textarea id="sdp-offer-out" readonly rows="2" class="text-input font-mono" placeholder="Gathering local hotspot IP candidates..."></textarea>
+
+                    <div class="sub-box flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <span style="font-weight:700; font-size:0.76rem;">Step 2: Receive Answer from Device B</span>
+                            <button id="btn-scan-answer-qr" class="btn btn-emerald" style="padding:0.3rem 0.65rem;">
+                                Scan Answer QR
+                            </button>
+                        </div>
+                        <div class="flex gap-2">
+                            <input id="sdp-answer-in" type="text" class="text-input font-mono" placeholder="Or paste Answer token from Device B...">
+                            <button id="btn-complete-handshake" class="btn btn-primary">Connect</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JOIN PANEL -->
+                <div id="panel-join" class="hidden flex-col gap-3">
+                    <div class="sub-box flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <span style="font-weight:700; font-size:0.76rem;">Step 1: Scan or Paste Host Offer</span>
+                            <button id="btn-scan-offer-qr" class="btn btn-primary" style="padding:0.3rem 0.65rem;">
+                                Scan Host QR
+                            </button>
+                        </div>
+                        <div class="flex gap-2">
+                            <input id="sdp-offer-in" type="text" class="text-input font-mono" placeholder="Paste Host Offer token here...">
+                            <button id="btn-generate-answer" class="btn btn-primary">Create Answer</button>
+                        </div>
+                    </div>
+
+                    <div class="sub-box flex items-center gap-3" style="flex-wrap:wrap; justify-content:center;">
+                        <div id="join-qr-box" style="width:148px; height:148px; background:#fff; border-radius:0.75rem; padding:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <span style="font-size:0.65rem; color:#64748b; text-align:center;">Answer QR appears here</span>
+                        </div>
+                        <div style="flex:1 1 190px;">
+                            <span class="font-mono" style="font-size:0.62rem; color:#34d399; font-weight:700;">STEP 2 OF 2</span>
+                            <h4 style="font-size:0.85rem; font-weight:700; margin-top:2px;">Show Answer QR to Host</h4>
+                            <p style="font-size:0.68rem; color:#94a3b8; margin-top:4px;">
+                                Scan this Answer QR on Device A, or copy the Answer token below and paste it on Device A.
+                            </p>
+                            <textarea id="sdp-answer-out" readonly rows="2" class="text-input font-mono" style="margin-top:0.45rem;" placeholder="Answer token..."></textarea>
+                            <button id="btn-copy-answer" class="btn btn-emerald" style="margin-top:0.45rem;">Copy Answer Token</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Camera QR Scanner Box (Uses Native Android BarcodeDetector + Fallback) -->
+                <div id="camera-scanner-wrap" class="sub-box hidden flex-col gap-2" style="border-color:#38bdf8;">
+                    <div class="flex items-center justify-between">
+                        <span id="scanner-status-label" style="font-size:0.72rem; font-weight:700; color:#38bdf8;">Point camera at peer QR code...</span>
+                        <button id="btn-stop-camera" class="btn btn-danger" style="padding:0.25rem 0.55rem;">Close Camera</button>
+                    </div>
+                    <div style="position:relative; width:100%; height:190px; background:#000; border-radius:0.75rem; overflow:hidden;">
+                        <video id="qr-video" style="width:100%; height:100%; object-fit:cover;" playsinline muted></video>
+                        <canvas id="qr-canvas" class="hidden"></canvas>
+                        <div style="position:absolute; inset:1.5rem; border:2px solid rgba(56,189,248,0.65); border-radius:0.75rem; pointer-events:none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between" style="padding-top:0.7rem; margin-top:0.5rem; border-top:1px solid #1e293b; font-size:0.68rem; color:#94a3b8;">
+                <span>Same-device browser tabs pair automatically</span>
+                <span id="rtc-state-indicator" class="font-mono" style="color:#38bdf8;">ICE: READY</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- MODAL 2: BUILT-IN ANDROID APK BUILDER & GITHUB REPO ZIP GENERATOR   -->
+    <!-- =================================================================== -->
+    <div id="apk-modal" class="modal-backdrop hidden">
+        <div class="modal-panel" style="max-width:38rem;">
+            <div class="flex items-center justify-between" style="padding-bottom:0.75rem; border-bottom:1px solid #1e293b;">
+                <div>
+                    <h3 style="font-size:0.98rem; font-weight:700; color:#fcd34d;">Android APK Builder & GitHub Repo Generator</h3>
+                    <p style="font-size:0.68rem; color:#94a3b8;">1-Click Ready-to-Build Capacitor APK Project with WebView Camera & Download Fixes</p>
+                </div>
+                <button id="btn-close-apk" class="btn btn-surface" style="padding:0.35rem 0.55rem;">✕</button>
+            </div>
+
+            <div class="overflow-y-auto flex-1" style="margin:0.85rem 0; display:flex; flex-direction:column; gap:0.85rem; font-size:0.75rem; line-height:1.5;">
+                <!-- 1-Click Complete ZIP Bundle -->
+                <div class="sub-box" style="border-color:rgba(245,158,11,0.45); background:rgba(245,158,11,0.07);">
+                    <div class="flex items-center justify-between gap-2" style="flex-wrap:wrap;">
+                        <div>
+                            <span class="font-mono" style="font-size:0.62rem; color:#fcd34d; font-weight:700;">OPTION 1 • EASIEST (PURE OFFLINE ZIP GENERATOR)</span>
+                            <h4 style="font-size:0.88rem; font-weight:700; color:#fff; margin-top:2px;">Download Complete GitHub APK Repository (.zip)</h4>
+                        </div>
+                        <button id="btn-download-apk-zip" class="btn btn-amber" style="padding:0.55rem 1rem; font-size:0.78rem;">
+                            Download AetherDrop-APK-Repo.zip
+                        </button>
+                    </div>
+                    <p style="color:#cbd5e1; margin-top:0.5rem; font-size:0.72rem;">
+                        Generates a real `.zip` archive right in your browser containing:
+                        <code style="color:#38bdf8;">www/index.html</code> (this exact offline app),
+                        <code style="color:#38bdf8;">package.json</code>,
+                        <code style="color:#38bdf8;">capacitor.config.json</code>,
+                        an automated <code style="color:#38bdf8;">.github/workflows/build-apk.yml</code> workflow that patches <code style="color:#38bdf8;">AndroidManifest.xml</code> + <code style="color:#38bdf8;">MainActivity.java</code> for WebView Camera & Blob permissions and outputs <strong style="color:#34d399;">AetherDrop-debug.apk</strong> automatically on GitHub Actions!
+                    </p>
+                </div>
+
+                <!-- Standalone HTML + Setup Script Buttons -->
+                <div class="sub-box flex items-center justify-between gap-2" style="flex-wrap:wrap;">
+                    <div>
+                        <h4 style="font-size:0.82rem; font-weight:700;">Individual Files</h4>
+                        <p style="font-size:0.68rem; color:#94a3b8;">Download standalone HTML or automated bash builder script</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="btn-download-html" class="btn btn-surface">Save index.html</button>
+                        <button id="btn-download-sh" class="btn btn-emerald">Save setup-apk.sh</button>
+                    </div>
+                </div>
+
+                <!-- 1-Command Terminal Snippet -->
+                <div class="sub-box flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                        <span style="font-weight:700; font-size:0.75rem; color:#38bdf8;">Option 2: 1-Command Terminal / Codespaces Generator</span>
+                        <button id="btn-copy-sh" class="btn btn-surface" style="padding:0.25rem 0.6rem;">Copy Command</button>
+                    </div>
+                    <pre id="apk-script-preview" class="text-input font-mono" style="overflow-x:auto; white-space:pre; max-height:130px; font-size:0.65rem; color:#94a3b8;"></pre>
+                </div>
+            </div>
+
+            <div class="flex justify-end" style="padding-top:0.65rem; border-top:1px solid #1e293b;">
+                <button id="btn-close-apk-bottom" class="btn btn-primary">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- MODAL 3: HOW OFFLINE HOTSPOT CONNECTION WORKS                       -->
+    <!-- =================================================================== -->
+    <div id="guide-modal" class="modal-backdrop hidden">
+        <div class="modal-panel">
+            <div class="flex items-center justify-between" style="padding-bottom:0.75rem; border-bottom:1px solid #1e293b;">
+                <div>
+                    <h3 style="font-size:0.95rem; font-weight:700;">How Offline Cross-Platform Transfer Works</h3>
+                    <p style="font-size:0.68rem; color:#94a3b8;">Zero Internet • Android, iOS, Windows & Linux</p>
+                </div>
+                <button id="btn-close-guide" class="btn btn-surface" style="padding:0.35rem 0.55rem;">✕</button>
+            </div>
+
+            <div class="overflow-y-auto flex-1" style="margin:0.85rem 0; display:flex; flex-direction:column; gap:0.75rem; font-size:0.74rem; line-height:1.5;">
+                <div class="sub-box" style="border-color:rgba(56,189,248,0.4);">
+                    <div class="flex items-center justify-between">
+                        <strong style="color:#38bdf8;">1. Mobile Wi-Fi Hotspot (Anywhere Offline)</strong>
+                        <span class="font-mono" style="font-size:0.65rem; color:#34d399;">20–50 MB/s</span>
+                    </div>
+                    <p style="color:#cbd5e1; margin-top:0.35rem;">
+                        Turn on <strong>Personal Hotspot</strong> on Phone A (Mobile Data can be completely OFF). Connect Phone B or your Windows PC to Phone A's hotspot. Then tap <strong>Pair Device</strong> to scan the QR code and transfer directly over local Wi-Fi radio.
+                    </p>
+                </div>
+                <div class="sub-box">
+                    <strong style="color:#f1f5f9;">2. Same Wi-Fi Router (LAN Direct)</strong>
+                    <p style="color:#94a3b8; margin-top:0.3rem;">
+                        If both devices are on the same home or office Wi-Fi router, WebRTC streams files directly across your local network without touching the internet.
+                    </p>
+                </div>
+                <div class="sub-box" style="border-color:rgba(244,63,94,0.3);">
+                    <strong style="color:#fda4af;">3. Android APK Native File Saving</strong>
+                    <p style="color:#94a3b8; margin-top:0.3rem;">
+                        Inside an Android APK WebView, standard browser `blob:` links can be blocked. AetherDrop includes a native <strong>Share / Save to Device</strong> sheet (`navigator.share` + DataURL fallback) so received files save cleanly on Android, iOS, and Windows.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-end" style="padding-top:0.65rem; border-top:1px solid #1e293b;">
+                <button id="btn-guide-to-pair" class="btn btn-primary">Pair a Device Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- MODAL 4: REAL INCOMING FILE TRANSFER PROMPT                         -->
+    <!-- =================================================================== -->
+    <div id="incoming-modal" class="modal-backdrop hidden">
+        <div class="modal-panel" style="max-width:23rem; text-align:center;">
+            <div style="margin:0 auto 0.75rem; width:3.6rem; height:3.6rem; border-radius:1rem; background:rgba(14,165,233,0.15); border:1px solid rgba(56,189,248,0.35); display:flex; align-items:center; justify-content:center; color:#38bdf8;">
+                <div id="incoming-os-icon"></div>
+            </div>
+            <h3 id="incoming-sender-name" style="font-size:0.95rem; font-weight:700;">Peer Device</h3>
+            <p style="font-size:0.72rem; color:#94a3b8; margin-top:2px;">wants to send you a file offline</p>
+
+            <div class="sub-box flex items-center gap-3 text-left" style="margin-top:0.9rem;">
+                <div id="incoming-file-ext" class="font-mono" style="width:2.4rem; height:2.4rem; border-radius:0.65rem; background:rgba(14,165,233,0.2); color:#38bdf8; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700; flex-shrink:0;">
+                    BIN
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p id="incoming-file-name" class="truncate" style="font-size:0.78rem; font-weight:700;">file.dat</p>
+                    <p id="incoming-file-size" class="font-mono" style="font-size:0.68rem; color:#94a3b8;">0 KB</p>
+                </div>
+            </div>
+
+            <div id="incoming-progress-wrap" class="hidden" style="margin-top:0.9rem;">
+                <div class="flex justify-between font-mono" style="font-size:0.68rem; margin-bottom:4px;">
+                    <span id="incoming-speed-label" style="color:#38bdf8;">Receiving chunks...</span>
+                    <span id="incoming-progress-pct">0%</span>
+                </div>
+                <div style="width:100%; height:7px; background:#1e293b; border-radius:999px; overflow:hidden;">
+                    <div id="incoming-progress-bar" style="height:100%; width:0%; background:#0ea5e9; transition:width 0.08s linear;"></div>
+                </div>
+            </div>
+
+            <div id="incoming-actions" class="grid" style="grid-template-columns:1fr 1fr; gap:0.65rem; margin-top:1.1rem;">
+                <button id="btn-decline-incoming" class="btn btn-surface">Decline</button>
+                <button id="btn-accept-incoming" class="btn btn-primary">Accept & Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- MODAL 5: RECEIVED FILES VAULT (APK WEBVIEW SHARE + SAVE COMPATIBLE) -->
+    <!-- =================================================================== -->
+    <div id="vault-modal" class="modal-backdrop hidden">
+        <div class="modal-panel" style="max-width:28rem;">
+            <div class="flex items-center justify-between" style="padding-bottom:0.75rem; border-bottom:1px solid #1e293b;">
+                <div>
+                    <h3 style="font-size:0.95rem; font-weight:700;">Received Offline Files</h3>
+                    <p style="font-size:0.68rem; color:#94a3b8;">Android APK WebView Native Share & Download Ready</p>
+                </div>
+                <button id="btn-close-vault" class="btn btn-surface" style="padding:0.35rem 0.55rem;">✕</button>
+            </div>
+            <div id="vault-list" class="overflow-y-auto flex-1" style="margin:0.85rem 0; display:flex; flex-direction:column; gap:0.6rem;"></div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- MODAL 6: RENAME DEVICE                                              -->
+    <!-- =================================================================== -->
+    <div id="prompt-modal" class="modal-backdrop hidden">
+        <div class="modal-panel" style="max-width:22rem;">
+            <h3 style="font-size:0.95rem; font-weight:700;">Rename Your Device</h3>
+            <p style="font-size:0.7rem; color:#94a3b8; margin-top:2px;">Shown to real peers on the radar</p>
+            <input id="prompt-input" type="text" class="text-input" style="margin-top:0.85rem;" placeholder="Enter device name...">
+            <div class="flex justify-end gap-2" style="margin-top:1rem;">
+                <button id="btn-prompt-cancel" class="btn btn-surface">Cancel</button>
+                <button id="btn-prompt-confirm" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <script>
+        /*************************************************************************
+         * 1. ZERO-DEPENDENCY PURE-JS QR CODE GENERATOR (ISO/IEC 18004)
+         * Renders valid scannable QR codes onto an HTML5 <canvas> 100% offline
+         * inside an Android APK WebView with zero external CDN scripts.
+         *************************************************************************/
+        const OfflineQR = (() => {
+            // GF(256) exponent & log tables for Reed-Solomon ECC
+            const EXP = new Uint8Array(512);
+            const LOG = new Uint8Array(256);
+            let x = 1;
+            for (let i = 0; i < 255; i++) {
+                EXP[i] = x;
+                LOG[x] = i;
+                x = (x << 1) ^ (x & 128 ? 0x11d : 0);
+            }
+            for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+
+            function gfMul(a, b) {
+                return (a === 0 || b === 0) ? 0 : EXP[LOG[a] + LOG[b]];
+            }
+
+            function rsGeneratorPoly(degree) {
+                let poly = [1];
+                for (let i = 0; i < degree; i++) {
+                    const next = new Array(poly.length + 1).fill(0);
+                    for (let j = 0; j < poly.length; j++) {
+                        next[j] ^= poly[j];
+                        next[j + 1] ^= gfMul(poly[j], EXP[i]);
+                    }
+                    poly = next;
+                }
+                return poly;
+            }
+
+            function rsEncode(data, ecLen) {
+                const gen = rsGeneratorPoly(ecLen);
+                const msg = new Uint8Array(data.length + ecLen);
+                msg.set(data);
+                for (let i = 0; i < data.length; i++) {
+                    const coef = msg[i];
+                    if (coef !== 0) {
+                        for (let j = 0; j < gen.length; j++) {
+                            msg[i + j] ^= gfMul(gen[j], coef);
+                        }
+                    }
+                }
+                return msg.slice(data.length);
+            }
+
+            // Version table for ECC Level L (versions 1 to 20): [totalCodewords, ecCodewordsPerBlock, numBlocksGroup1, dataCodewordsGroup1, numBlocksGroup2, dataCodewordsGroup2]
+            const VERSION_TABLE_L = [
+                null,
+                [26, 7, 1, 19, 0, 0],
+                [44, 10, 1, 34, 0, 0],
+                [70, 15, 1, 55, 0, 0],
+                [100, 20, 1, 80, 0, 0],
+                [134, 26, 1, 108, 0, 0],
+                [172, 18, 2, 68, 0, 0],
+                [196, 20, 2, 78, 0, 0],
+                [242, 24, 2, 97, 0, 0],
+                [292, 30, 2, 116, 0, 0],
+                [346, 18, 2, 68, 2, 69],
+                [404, 20, 4, 81, 0, 0],
+                [466, 24, 2, 92, 2, 93],
+                [532, 26, 4, 107, 0, 0],
+                [581, 30, 3, 115, 1, 116],
+                [655, 22, 5, 87, 1, 88],
+                [733, 24, 5, 98, 1, 99],
+                [815, 28, 1, 107, 5, 108],
+                [901, 30, 5, 120, 1, 121],
+                [991, 28, 3, 113, 4, 114],
+                [1085, 28, 3, 107, 5, 108]
+            ];
+
+            const ALIGNMENT_POS = [
+                null, [], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34],
+                [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 50],
+                [6, 30, 54], [6, 32, 58], [6, 34, 62], [6, 26, 46, 66],
+                [6, 26, 48, 70], [6, 26, 50, 74], [6, 30, 54, 78],
+                [6, 30, 56, 82], [6, 30, 58, 86], [6, 34, 62, 90]
+            ];
+
+            function renderToElement(container, text, sizePx = 136) {
+                container.innerHTML = '';
+                const bytes = new TextEncoder().encode(text);
+
+                // Pick smallest version that fits byte mode
+                let ver = 1;
+                while (ver <= 20) {
+                    const info = VERSION_TABLE_L[ver];
+                    const totalData = info[2] * info[3] + info[4] * info[5];
+                    const headerBytes = ver < 10 ? 2 : 3;
+                    if (bytes.length + headerBytes <= totalData) break;
+                    ver++;
+                }
+                if (ver > 20) {
+                    container.innerHTML = `<div style="font-size:10px;color:#334155;text-align:center;padding:8px;">Token ready below (Use Copy Token button)</div>`;
+                    return;
+                }
+
+                const info = VERSION_TABLE_L[ver];
+                const totalDataBytes = info[2] * info[3] + info[4] * info[5];
+                const bitBuf = [];
+                const pushBits = (val, len) => {
+                    for (let i = len - 1; i >= 0; i--) bitBuf.push((val >>> i) & 1);
+                };
+
+                // Byte mode indicator (0100)
+                pushBits(4, 4);
+                pushBits(bytes.length, ver < 10 ? 8 : 16);
+                for (let b of bytes) pushBits(b, 8);
+                pushBits(0, Math.min(4, totalDataBytes * 8 - bitBuf.length));
+                while (bitBuf.length % 8 !== 0) bitBuf.push(0);
+
+                const dataCodewords = new Uint8Array(totalDataBytes);
+                for (let i = 0; i < bitBuf.length / 8; i++) {
+                    let byte = 0;
+                    for (let b = 0; b < 8; b++) byte = (byte << 1) | bitBuf[i * 8 + b];
+                    dataCodewords[i] = byte;
+                }
+                let padIdx = 0;
+                for (let i = bitBuf.length / 8; i < totalDataBytes; i++) {
+                    dataCodewords[i] = (padIdx++ % 2 === 0) ? 0xEC : 0x11;
+                }
+
+                // Split into blocks and compute ECC
+                const ecLen = info[1];
+                const blocks = [];
+                const ecBlocks = [];
+                let offset = 0;
+                for (let b = 0; b < info[2]; b++) {
+                    const slice = dataCodewords.slice(offset, offset + info[3]);
+                    offset += info[3];
+                    blocks.push(slice);
+                    ecBlocks.push(rsEncode(slice, ecLen));
+                }
+                for (let b = 0; b < info[4]; b++) {
+                    const slice = dataCodewords.slice(offset, offset + info[5]);
+                    offset += info[5];
+                    blocks.push(slice);
+                    ecBlocks.push(rsEncode(slice, ecLen));
+                }
+
+                const interleaved = [];
+                const maxDataLen = Math.max(info[3], info[5]);
+                for (let i = 0; i < maxDataLen; i++) {
+                    for (let b = 0; b < blocks.length; b++) {
+                        if (i < blocks[b].length) interleaved.push(blocks[b][i]);
+                    }
+                }
+                for (let i = 0; i < ecLen; i++) {
+                    for (let b = 0; b < ecBlocks.length; b++) {
+                        interleaved.push(ecBlocks[b][i]);
+                    }
+                }
+
+                // Build Matrix
+                const dim = ver * 4 + 17;
+                const grid = Array.from({ length: dim }, () => new Int8Array(dim).fill(0));
+                const reserved = Array.from({ length: dim }, () => new Uint8Array(dim).fill(0));
+
+                const setModule = (r, c, dark) => {
+                    if (r >= 0 && r < dim && c >= 0 && c < dim) {
+                        grid[r][c] = dark ? 1 : 0;
+                        reserved[r][c] = 1;
+                    }
+                };
+
+                const drawFinder = (r0, c0) => {
+                    for (let dr = -1; dr <= 7; dr++) {
+                        for (let dc = -1; dc <= 7; dc++) {
+                            const dark = (dr >= 0 && dr <= 6 && (dc === 0 || dc === 6)) ||
+                                         (dc >= 0 && dc <= 6 && (dr === 0 || dr === 6)) ||
+                                         (dr >= 2 && dr <= 4 && dc >= 2 && dc <= 4);
+                            setModule(r0 + dr, c0 + dc, dark);
+                        }
+                    }
+                };
+                drawFinder(0, 0);
+                drawFinder(0, dim - 7);
+                drawFinder(dim - 7, 0);
+
+                // Timing patterns
+                for (let i = 8; i < dim - 8; i++) {
+                    setModule(6, i, i % 2 === 0);
+                    setModule(i, 6, i % 2 === 0);
+                }
+
+                // Alignment patterns
+                const alignCoords = ALIGNMENT_POS[ver];
+                for (let r of alignCoords) {
+                    for (let c of alignCoords) {
+                        if ((r === 6 && c === 6) || (r === 6 && c === dim - 7) || (r === dim - 7 && c === 6)) continue;
+                        for (let dr = -2; dr <= 2; dr++) {
+                            for (let dc = -2; dc <= 2; dc++) {
+                                const dark = Math.max(Math.abs(dr), Math.abs(dc)) !== 1;
+                                setModule(r + dr, c + dc, dark);
+                            }
+                        }
+                    }
+                }
+
+                // Reserve format info & dark module
+                setModule(dim - 8, 8, true);
+                for (let i = 0; i < 9; i++) {
+                    if (!reserved[8][i]) reserved[8][i] = 1;
+                    if (!reserved[i][8]) reserved[i][8] = 1;
+                }
+                for (let i = 0; i < 8; i++) {
+                    reserved[8][dim - 1 - i] = 1;
+                    reserved[dim - 1 - i][8] = 1;
+                }
+
+                // Version info for ver >= 7
+                if (ver >= 7) {
+                    let rem = ver;
+                    for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1F25);
+                    const vBits = (ver << 12) | rem;
+                    for (let i = 0; i < 18; i++) {
+                        const bit = ((vBits >>> i) & 1) === 1;
+                        const a = dim - 11 + (i % 3);
+                        const b = Math.floor(i / 3);
+                        setModule(b, a, bit);
+                        setModule(a, b, bit);
+                    }
+                }
+
+                // Place data bits (Mask 0: (r + c) % 2 === 0)
+                let bitIdx = 0;
+                const totalBits = interleaved.length * 8;
+                let upward = true;
+                for (let right = dim - 1; right >= 1; right -= 2) {
+                    if (right === 6) right = 5;
+                    for (let vert = 0; vert < dim; vert++) {
+                        const r = upward ? dim - 1 - vert : vert;
+                        for (let j = 0; j < 2; j++) {
+                            const c = right - j;
+                            if (!reserved[r][c]) {
+                                let dark = false;
+                                if (bitIdx < totalBits) {
+                                    dark = ((interleaved[bitIdx >>> 3] >>> (7 - (bitIdx & 7))) & 1) === 1;
+                                    bitIdx++;
+                                }
+                                if ((r + c) % 2 === 0) dark = !dark;
+                                grid[r][c] = dark ? 1 : 0;
+                            }
+                        }
+                    }
+                    upward = !upward;
+                }
+
+                // Format bits for ECC Level L (01) and Mask 0 (000) -> 0x77c4
+                const fmtBits = 0x77c4;
+                for (let i = 0; i <= 5; i++) setModule(8, i, ((fmtBits >>> i) & 1) === 1);
+                setModule(8, 7, ((fmtBits >>> 6) & 1) === 1);
+                setModule(8, 8, ((fmtBits >>> 7) & 1) === 1);
+                setModule(7, 8, ((fmtBits >>> 8) & 1) === 1);
+                for (let i = 9; i < 15; i++) setModule(14 - i, 8, ((fmtBits >>> i) & 1) === 1);
+                for (let i = 0; i < 8; i++) setModule(dim - 1 - i, 8, ((fmtBits >>> i) & 1) === 1);
+                for (let i = 8; i < 15; i++) setModule(8, dim - 15 + i, ((fmtBits >>> i) & 1) === 1);
+
+                const canvas = document.createElement('canvas');
+                canvas.width = sizePx;
+                canvas.height = sizePx;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, sizePx, sizePx);
+
+                const scale = sizePx / (dim + 2);
+                ctx.fillStyle = '#070b14';
+                for (let r = 0; r < dim; r++) {
+                    for (let c = 0; c < dim; c++) {
+                        if (grid[r][c]) {
+                            ctx.fillRect(Math.floor((c + 1) * scale), Math.floor((r + 1) * scale), Math.ceil(scale), Math.ceil(scale));
+                        }
+                    }
+                }
+                container.appendChild(canvas);
+            }
+
+            return { renderToElement };
+        })();
+
+        /*************************************************************************
+         * 2. PURE-JS ZIP ARCHIVE GENERATOR (CRC32 + Store Zip Builder)
+         * Builds a real downloadable .zip repository for the APK Builder modal
+         * with zero external dependencies.
+         *************************************************************************/
+        const OfflineZip = (() => {
+            const crcTable = new Uint32Array(256);
+            for (let n = 0; n < 256; n++) {
+                let c = n;
+                for (let k = 0; k < 8; k++) c = (c & 1) ? (0xedb88320 ^ (c >>> 1)) : (c >>> 1);
+                crcTable[n] = c >>> 0;
+            }
+            function crc32(bytes) {
+                let c = 0xffffffff;
+                for (let i = 0; i < bytes.length; i++) c = crcTable[(c ^ bytes[i]) & 0xff] ^ (c >>> 8);
+                return (c ^ 0xffffffff) >>> 0;
+            }
+
+            function createZipBlob(files) {
+                const encoder = new TextEncoder();
+                const localParts = [];
+                const centralParts = [];
+                let offset = 0;
+
+                files.forEach(file => {
+                    const nameBytes = encoder.encode(file.path);
+                    const dataBytes = typeof file.content === 'string' ? encoder.encode(file.content) : file.content;
+                    const crc = crc32(dataBytes);
+
+                    const localHeader = new Uint8Array(30 + nameBytes.length);
+                    const lv = new DataView(localHeader.buffer);
+                    lv.setUint32(0, 0x04034b50, true);
+                    lv.setUint16(4, 20, true);
+                    lv.setUint16(6, 0, true);
+                    lv.setUint16(8, 0, true); // Store method
+                    lv.setUint16(10, 0, true);
+                    lv.setUint16(12, 0x2100, true);
+                    lv.setUint32(14, crc, true);
+                    lv.setUint32(18, dataBytes.length, true);
+                    lv.setUint32(22, dataBytes.length, true);
+                    lv.setUint16(26, nameBytes.length, true);
+                    lv.setUint16(28, 0, true);
+                    localHeader.set(nameBytes, 30);
+
+                    localParts.push(localHeader, dataBytes);
+
+                    const centralHeader = new Uint8Array(46 + nameBytes.length);
+                    const cv = new DataView(centralHeader.buffer);
+                    cv.setUint32(0, 0x02014b50, true);
+                    cv.setUint16(4, 20, true);
+                    cv.setUint16(6, 20, true);
+                    cv.setUint16(8, 0, true);
+                    cv.setUint16(10, 0, true);
+                    cv.setUint16(12, 0, true);
+                    cv.setUint16(14, 0x2100, true);
+                    cv.setUint32(16, crc, true);
+                    cv.setUint32(20, dataBytes.length, true);
+                    cv.setUint32(24, dataBytes.length, true);
+                    cv.setUint16(28, nameBytes.length, true);
+                    cv.setUint16(30, 0, true);
+                    cv.setUint16(32, 0, true);
+                    cv.setUint16(34, 0, true);
+                    cv.setUint16(36, 0, true);
+                    cv.setUint32(38, 0, true);
+                    cv.setUint32(42, offset, true);
+                    centralHeader.set(nameBytes, 46);
+
+                    centralParts.push(centralHeader);
+                    offset += localHeader.length + dataBytes.length;
+                });
+
+                const centralSize = centralParts.reduce((s, p) => s + p.length, 0);
+                const eocd = new Uint8Array(22);
+                const ev = new DataView(eocd.buffer);
+                ev.setUint32(0, 0x06054b50, true);
+                ev.setUint16(4, 0, true);
+                ev.setUint16(6, 0, true);
+                ev.setUint16(8, files.length, true);
+                ev.setUint16(10, files.length, true);
+                ev.setUint32(12, centralSize, true);
+                ev.setUint32(16, offset, true);
+                ev.setUint16(20, 0, true);
+
+                return new Blob([...localParts, ...centralParts, eocd], { type: 'application/zip' });
+            }
+
+            return { createZipBlob };
+        })();
+
+        /*************************************************************************
+         * 3. ANDROID APK WEBVIEW COMPATIBLE FILE SAVER & NATIVE SHARE
+         * Handles saving Blobs inside restricted Android WebViews via:
+         *  a) Native Web Share API (`navigator.share({ files: [file] })`)
+         *  b) File System Access API (`window.showSaveFilePicker`)
+         *  c) Base64 Data URL + Standard Blob Download fallback
+         *************************************************************************/
+        async function saveOrShareFileOnDevice(blob, fileName, preferNativeShare = false) {
+            const fileObj = new File([blob], fileName, { type: blob.type || 'application/octet-stream' });
+
+            // 1. Native Android/iOS Share Sheet (works inside Android WebViews & Capacitor)
+            if (preferNativeShare && navigator.canShare && navigator.canShare({ files: [fileObj] })) {
+                try {
+                    await navigator.share({
+                        title: fileName,
+                        text: `Received offline via AetherDrop`,
+                        files: [fileObj]
+                    });
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                }
+            }
+
+            // 2. File System Access API (Desktop / Chrome)
+            if (window.showSaveFilePicker) {
+                try {
+                    const handle = await window.showSaveFilePicker({ suggestedName: fileName });
+                    const writable = await handle.createWritable();
+                    await writable.write(blob);
+                    await writable.close();
+                    showToast(`Saved "${fileName}" to device`, 'emerald');
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                }
+            }
+
+            // 3. For smaller files (< 8MB) inside Android APK WebView where blob: links can fail, offer DataURL fallback
+            const isAndroidWebView = /wv|Version\/\d+\.\d+.*Chrome/.test(navigator.userAgent);
+            if (isAndroidWebView && blob.size < 8 * 1024 * 1024) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const a = document.createElement('a');
+                    a.href = reader.result;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                };
+                reader.readAsDataURL(blob);
+                return;
+            }
+
+            // 4. Standard Blob ObjectURL anchor download
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => a.remove(), 500);
+        }
+
+        /*************************************************************************
+         * 4. WEB AUDIO FEEDBACK (Zero External Sound Assets)
+         *************************************************************************/
+        class SoundFX {
+            constructor() { this.ctx = null; }
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+            }
+            tone(freq, type = 'sine', dur = 0.14, delay = 0) {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + delay);
+                    gain.gain.setValueAtTime(0.07, this.ctx.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + delay + dur);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(this.ctx.currentTime + delay);
+                    osc.stop(this.ctx.currentTime + delay + dur);
+                } catch (e) {}
+            }
+            sonar() { this.tone(540, 'sine', 0.14); }
+            complete() { this.tone(587.3, 'sine', 0.14, 0); this.tone(880, 'sine', 0.24, 0.12); }
+            incoming() { this.tone(659.2, 'triangle', 0.15, 0); this.tone(784, 'triangle', 0.22, 0.14); }
+        }
+        const sfx = new SoundFX();
+
+        /*************************************************************************
+         * 5. PLATFORM DETECTION & INLINE SVG OS ICONS
+         *************************************************************************/
+        const OS_ICONS = {
+            android: `<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/></svg>`,
+            ios: `<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.33c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.72 1.4-.58.68-1.1 1.79-.96 2.84 1.04.08 2.08-.52 2.72-1.3"/></svg>`,
+            windows: `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>`
+        };
+
+        function detectLocalPlatform() {
+            const ua = navigator.userAgent.toLowerCase();
+            if (ua.includes('android')) return { os: 'android', label: 'Android', defaultName: 'Android-' + Math.floor(100 + Math.random() * 899) };
+            if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('mac')) return { os: 'ios', label: 'iOS / macOS', defaultName: 'Apple-' + Math.floor(100 + Math.random() * 899) };
+            return { os: 'windows', label: 'Windows / PC', defaultName: 'PC-' + Math.floor(100 + Math.random() * 899) };
+        }
+
+        const localInfo = detectLocalPlatform();
+        const myPeerId = 'peer-' + Math.random().toString(36).substring(2, 9);
+        let myDeviceName = localStorage.getItem('aetherdrop_real_name') || localInfo.defaultName;
+
+        let peers = []; // Strictly real connected peers only
+        let stagedFiles = [];
+        let receivedFiles = [];
+        let selectedPeerForPick = null;
+
+        function formatBytes(bytes) {
+            if (!bytes || bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function showToast(message, accent = 'sky') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colors = { sky: '#38bdf8', emerald: '#34d399', rose: '#fb7185' };
+            const dotColor = colors[accent] || colors.sky;
+            toast.className = 'toast-item';
+            toast.style.borderColor = dotColor;
+            toast.innerHTML = `<span style="width:8px;height:8px;border-radius:999px;background:${dotColor};flex-shrink:0;"></span><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 260);
+            }, 3200);
+        }
+
+        function updateSelfUI() {
+            document.getElementById('my-device-icon').innerHTML = OS_ICONS[localInfo.os];
+            document.getElementById('my-device-name').textContent = myDeviceName;
+            document.getElementById('my-device-os').textContent = localInfo.label;
+        }
+
+        function updateConnectionHeader() {
+            const badge = document.getElementById('connection-badge');
+            const text = document.getElementById('connection-count-text');
+            const emptyCard = document.getElementById('empty-radar-card');
+
+            if (peers.length === 0) {
+                badge.classList.remove('connected');
+                text.textContent = '0 Connected';
+                emptyCard.classList.remove('hidden');
+            } else {
+                badge.classList.add('connected');
+                text.textContent = `${peers.length} Real Peer${peers.length > 1 ? 's' : ''}`;
+                emptyCard.classList.add('hidden');
+            }
+        }
+
+        function registerOrUpdateRealPeer(peerData) {
+            const existingIdx = peers.findIndex(p => p.id === peerData.id);
+            if (existingIdx !== -1) {
+                peers[existingIdx] = { ...peers[existingIdx], ...peerData, lastSeen: Date.now() };
+            } else {
+                const angles = [45, 145, 225, 315, 90, 270];
+                const angle = angles[peers.length % angles.length];
+                peers.push({
+                    id: peerData.id,
+                    name: peerData.name || 'Connected Peer',
+                    os: peerData.os || 'android',
+                    osLabel: peerData.osLabel || 'Direct P2P',
+                    transport: peerData.transport || 'webrtc',
+                    channel: peerData.channel || null,
+                    angle,
+                    distance: 34,
+                    status: peerData.status || 'Connected • Ready',
+                    progress: 0,
+                    lastSeen: Date.now()
+                });
+                sfx.sonar();
+                showToast(`Connected to ${peerData.name}`, 'emerald');
+            }
+            updateConnectionHeader();
+            renderPeers();
+        }
+
+        function removePeer(peerId) {
+            const idx = peers.findIndex(p => p.id === peerId);
+            if (idx !== -1) {
+                const name = peers[idx].name;
+                peers.splice(idx, 1);
+                updateConnectionHeader();
+                renderPeers();
+                showToast(`${name} disconnected`, 'rose');
+            }
+        }
+
+        function renderPeers() {
+            const layer = document.getElementById('peers-layer');
+            layer.innerHTML = '';
+
+            peers.forEach((peer) => {
+                const rad = (peer.angle * Math.PI) / 180;
+                const isMobile = window.innerWidth < 640;
+                const radiusPct = isMobile ? Math.min(peer.distance, 33) : peer.distance;
+                const x = 50 + radiusPct * Math.cos(rad);
+                const y = 50 + radiusPct * Math.sin(rad);
+
+                const node = document.createElement('div');
+                node.id = `node-${peer.id}`;
+                node.className = 'peer-node';
+                node.style.left = `${x}%`;
+                node.style.top = `${y}%`;
+
+                const circumference = 213.6;
+                const offset = circumference - (peer.progress / 100) * circumference;
+                const isTransferring = peer.progress > 0 && peer.progress < 100;
+
+                node.innerHTML = `
+                    <div style="position:relative; width:5rem; height:5rem; display:flex; align-items:center; justify-content:center;">
+                        <svg style="position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg);" viewBox="0 0 80 80">
+                            <circle cx="40" cy="40" r="34" stroke="#1e293b" stroke-width="3" fill="transparent" />
+                            <circle id="ring-${peer.id}" cx="40" cy="40" r="34" stroke="${isTransferring ? '#38bdf8' : 'transparent'}" stroke-width="3.5" fill="transparent"
+                                stroke-dasharray="${circumference}"
+                                stroke-dashoffset="${offset}"
+                                stroke-linecap="round" />
+                        </svg>
+                        <div class="peer-avatar">
+                            ${OS_ICONS[peer.os] || OS_ICONS.android}
+                        </div>
+                        <span style="position:absolute; top:6px; right:6px; width:11px; height:11px; border-radius:999px; background:#34d399; border:2px solid #0f172a;"></span>
+                    </div>
+                    <div class="peer-label-card">
+                        <div class="flex items-center justify-center gap-1.5">
+                            <span style="font-size:0.74rem; font-weight:700; color:#f8fafc; white-space:nowrap;">${peer.name}</span>
+                            <span class="font-mono" style="font-size:0.58rem; padding:1px 5px; border-radius:4px; background:rgba(56,189,248,0.15); color:#38bdf8;">${peer.osLabel}</span>
+                        </div>
+                        <p id="status-${peer.id}" class="font-mono" style="font-size:0.62rem; color:#94a3b8; margin-top:2px;">
+                            ${isTransferring ? `Sending ${peer.progress}%` : (stagedFiles.length > 0 ? 'Tap to Send File(s)' : peer.status)}
+                        </p>
+                    </div>
+                `;
+
+                node.addEventListener('click', () => handlePeerClick(peer));
+                node.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); node.classList.add('drag-target'); });
+                node.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); node.classList.remove('drag-target'); });
+                node.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    node.classList.remove('drag-target');
+                    document.getElementById('drop-overlay').classList.add('hidden');
+                    if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+                        stageFiles(Array.from(e.dataTransfer.files), false);
+                        initiateRealTransferToPeer(peer);
+                    }
+                });
+
+                layer.appendChild(node);
+            });
+        }
+
+        window.addEventListener('resize', renderPeers);
+
+        /*************************************************************************
+         * 6. TRANSPORT LAYER A: REAL LOCAL TAB DISCOVERY (BroadcastChannel)
+         *************************************************************************/
+        const meshChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('aetherdrop_real_p2p_v3') : null;
+
+        function broadcastHello() {
+            if (!meshChannel) return;
+            meshChannel.postMessage({
+                type: 'HELLO',
+                peer: { id: myPeerId, name: myDeviceName, os: localInfo.os, osLabel: `${localInfo.label}` }
+            });
+        }
+
+        if (meshChannel) {
+            meshChannel.onmessage = (event) => {
+                const msg = event.data;
+                if (!msg || !msg.type) return;
+
+                if (msg.type === 'HELLO' && msg.peer.id !== myPeerId) {
+                    const alreadyKnown = peers.some(p => p.id === msg.peer.id);
+                    registerOrUpdateRealPeer({
+                        id: msg.peer.id,
+                        name: msg.peer.name,
+                        os: msg.peer.os,
+                        osLabel: msg.peer.osLabel,
+                        transport: 'broadcast',
+                        status: 'Live Local Tab'
+                    });
+                    if (!alreadyKnown) broadcastHello();
+                } else if (msg.type === 'BYE' && msg.peerId) {
+                    removePeer(msg.peerId);
+                } else if (msg.type === 'BC_OFFER_FILE' && msg.targetId === myPeerId) {
+                    handleIncomingFileOffer({
+                        transferId: msg.transferId,
+                        senderId: msg.senderId,
+                        senderName: msg.senderName,
+                        senderOs: msg.senderOs,
+                        fileName: msg.fileName,
+                        fileSize: msg.fileSize,
+                        fileType: msg.fileType,
+                        transport: 'broadcast',
+                        blobData: msg.blobData
+                    });
+                } else if (msg.type === 'BC_ACCEPT_FILE' && msg.targetId === myPeerId) {
+                    completeBroadcastSenderUI(msg.senderId);
+                }
+            };
+            window.addEventListener('beforeunload', () => meshChannel.postMessage({ type: 'BYE', peerId: myPeerId }));
+            setTimeout(broadcastHello, 250);
+        }
+
+        /*************************************************************************
+         * 7. TRANSPORT LAYER B: SERVERLESS OFFLINE WEBRTC + EMBEDDED QR
+         *************************************************************************/
+        let rtcPeerConn = null;
+        let rtcDataChannel = null;
+
+        function compressSessionDescription(desc) {
+            const minimalSdp = desc.sdp
+                .split(/\r?\n/)
+                .filter(line =>
+                    line.startsWith('v=') ||
+                    line.startsWith('o=') ||
+                    line.startsWith('s=') ||
+                    line.startsWith('t=') ||
+                    line.startsWith('m=') ||
+                    line.startsWith('c=') ||
+                    line.startsWith('a=ice-ufrag:') ||
+                    line.startsWith('a=ice-pwd:') ||
+                    line.startsWith('a=fingerprint:') ||
+                    line.startsWith('a=setup:') ||
+                    line.startsWith('a=mid:') ||
+                    line.startsWith('a=sctp-port:') ||
+                    (line.startsWith('a=candidate:') && line.includes(' typ host'))
+                )
+                .join('\r\n') + '\r\n';
+
+            const payload = {
+                t: desc.type === 'offer' ? 'o' : 'a',
+                s: minimalSdp,
+                n: myDeviceName,
+                o: localInfo.os
+            };
+            return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+        }
+
+        function decompressSessionDescription(token) {
+            const jsonStr = decodeURIComponent(escape(atob(token.trim())));
+            const data = JSON.parse(jsonStr);
+            let sdp = data.s;
+            if (!sdp.includes('a=bundle-policy')) {
+                sdp = sdp.replace('t=0 0\r\n', 't=0 0\r\na=group:BUNDLE 0\r\n');
+            }
+            return {
+                rtcDesc: { type: data.t === 'o' ? 'offer' : 'answer', sdp },
+                peerName: data.n || 'WebRTC Peer',
+                peerOs: data.o || 'android'
+            };
+        }
+
+        async function createHostOffer() {
+            document.getElementById('sdp-offer-out').value = 'Gathering local hotspot/LAN IP candidates...';
+            document.getElementById('rtc-state-indicator').textContent = 'ICE: GATHERING';
+
+            if (rtcPeerConn) {
+                try { rtcPeerConn.close(); } catch (e) {}
+            }
+
+            rtcPeerConn = new RTCPeerConnection({ iceServers: [] });
+            rtcDataChannel = rtcPeerConn.createDataChannel('aetherdrop_p2p', { ordered: true });
+            rtcDataChannel.binaryType = 'arraybuffer';
+            bindWebRTCDataChannel(rtcDataChannel);
+
+            let finalized = false;
+            const finalizeOffer = () => {
+                if (finalized || !rtcPeerConn.localDescription) return;
+                finalized = true;
+                const token = compressSessionDescription(rtcPeerConn.localDescription);
+                document.getElementById('sdp-offer-out').value = token;
+                document.getElementById('rtc-state-indicator').textContent = 'ICE: OFFER READY';
+                OfflineQR.renderToElement(document.getElementById('host-qr-box'), token, 136);
+            };
+
+            rtcPeerConn.onicecandidate = (e) => { if (!e.candidate) finalizeOffer(); };
+            rtcPeerConn.onicegatheringstatechange = () => {
+                if (rtcPeerConn.iceGatheringState === 'complete') finalizeOffer();
+            };
+
+            const offer = await rtcPeerConn.createOffer();
+            await rtcPeerConn.setLocalDescription(offer);
+            setTimeout(finalizeOffer, 1100);
+        }
+
+        async function createJoinerAnswer(offerToken) {
+            try {
+                const decoded = decompressSessionDescription(offerToken);
+                if (rtcPeerConn) {
+                    try { rtcPeerConn.close(); } catch (e) {}
+                }
+
+                rtcPeerConn = new RTCPeerConnection({ iceServers: [] });
+                rtcPeerConn.ondatachannel = (event) => {
+                    rtcDataChannel = event.channel;
+                    rtcDataChannel.binaryType = 'arraybuffer';
+                    bindWebRTCDataChannel(rtcDataChannel);
+                };
+
+                let finalized = false;
+                const finalizeAnswer = () => {
+                    if (finalized || !rtcPeerConn.localDescription) return;
+                    finalized = true;
+                    const answerToken = compressSessionDescription(rtcPeerConn.localDescription);
+                    document.getElementById('sdp-answer-out').value = answerToken;
+                    document.getElementById('rtc-state-indicator').textContent = 'ICE: ANSWER READY';
+                    OfflineQR.renderToElement(document.getElementById('join-qr-box'), answerToken, 136);
+                    showToast('Answer QR generated! Scan or paste on Host device.', 'emerald');
+                };
+
+                rtcPeerConn.onicecandidate = (e) => { if (!e.candidate) finalizeAnswer(); };
+
+                await rtcPeerConn.setRemoteDescription(decoded.rtcDesc);
+                const answer = await rtcPeerConn.createAnswer();
+                await rtcPeerConn.setLocalDescription(answer);
+                setTimeout(finalizeAnswer, 1100);
+            } catch (err) {
+                showToast('Invalid Host Offer token. Please copy the full Offer token.', 'rose');
+            }
+        }
+
+        async function completeHostHandshake(answerToken) {
+            try {
+                const decoded = decompressSessionDescription(answerToken);
+                if (!rtcPeerConn) return showToast('Host session not initialized.', 'rose');
+                await rtcPeerConn.setRemoteDescription(decoded.rtcDesc);
+                document.getElementById('rtc-state-indicator').textContent = 'RTC: CONNECTING...';
+            } catch (err) {
+                showToast('Invalid Answer token. Please check and try again.', 'rose');
+            }
+        }
+
+        /*************************************************************************
+         * 8. REAL CHUNKED WEBRTC FILE STREAMING (64KB Chunks + Backpressure)
+         *************************************************************************/
+        let incomingRxState = null;
+        let pendingAcceptResolver = null;
+        let currentRemotePeerId = null;
+
+        function bindWebRTCDataChannel(channel) {
+            channel.onopen = () => {
+                document.getElementById('rtc-state-indicator').textContent = 'RTC: OPEN';
+                channel.send(JSON.stringify({
+                    type: 'PEER_IDENTITY',
+                    id: myPeerId,
+                    name: myDeviceName,
+                    os: localInfo.os,
+                    osLabel: `${localInfo.label}`
+                }));
+
+                document.getElementById('pairing-modal').classList.add('hidden');
+                stopCameraScanner();
+            };
+
+            channel.onclose = () => {
+                if (currentRemotePeerId) removePeer(currentRemotePeerId);
+            };
+
+            channel.onmessage = (event) => {
+                if (event.data instanceof ArrayBuffer) {
+                    receiveBinaryChunk(event.data);
+                    return;
+                }
+                try {
+                    const msg = JSON.parse(event.data);
+                    if (msg.type === 'PEER_IDENTITY') {
+                        currentRemotePeerId = msg.id;
+                        registerOrUpdateRealPeer({
+                            id: msg.id,
+                            name: msg.name,
+                            os: msg.os,
+                            osLabel: msg.osLabel,
+                            transport: 'webrtc',
+                            channel: channel,
+                            status: 'Direct Hotspot P2P'
+                        });
+                    } else if (msg.type === 'FILE_OFFER') {
+                        handleIncomingFileOffer({
+                            transferId: msg.transferId,
+                            senderId: msg.senderId,
+                            senderName: msg.senderName,
+                            senderOs: msg.senderOs,
+                            fileName: msg.fileName,
+                            fileSize: msg.fileSize,
+                            fileType: msg.fileType,
+                            transport: 'webrtc',
+                            channel: channel
+                        });
+                    } else if (msg.type === 'FILE_ACCEPTED') {
+                        if (pendingAcceptResolver) pendingAcceptResolver(true);
+                    } else if (msg.type === 'FILE_DECLINED') {
+                        if (pendingAcceptResolver) pendingAcceptResolver(false);
+                    } else if (msg.type === 'FILE_EOF') {
+                        finalizeReassembledWebRTCFile();
+                    }
+                } catch (e) {}
+            };
+        }
+
+        function handleIncomingFileOffer(offer) {
+            sfx.incoming();
+            incomingRxState = {
+                ...offer,
+                chunks: [],
+                receivedBytes: 0,
+                startTime: performance.now()
+            };
+
+            document.getElementById('incoming-os-icon').innerHTML = OS_ICONS[offer.senderOs] || OS_ICONS.android;
+            document.getElementById('incoming-sender-name').textContent = offer.senderName;
+            document.getElementById('incoming-file-name').textContent = offer.fileName;
+            document.getElementById('incoming-file-size').textContent = `${formatBytes(offer.fileSize)} • Direct P2P`;
+
+            const ext = offer.fileName.includes('.') ? offer.fileName.split('.').pop().slice(0, 4).toUpperCase() : 'FILE';
+            document.getElementById('incoming-file-ext').textContent = ext;
+
+            document.getElementById('incoming-progress-wrap').classList.add('hidden');
+            document.getElementById('incoming-actions').classList.remove('hidden');
+            document.getElementById('incoming-modal').classList.remove('hidden');
+        }
+
+        document.getElementById('btn-decline-incoming').addEventListener('click', () => {
+            if (incomingRxState && incomingRxState.transport === 'webrtc' && incomingRxState.channel) {
+                incomingRxState.channel.send(JSON.stringify({ type: 'FILE_DECLINED' }));
+            }
+            incomingRxState = null;
+            document.getElementById('incoming-modal').classList.add('hidden');
+            showToast('Declined incoming file transfer', 'rose');
+        });
+
+        document.getElementById('btn-accept-incoming').addEventListener('click', () => {
+            if (!incomingRxState) return;
+            document.getElementById('incoming-actions').classList.add('hidden');
+            document.getElementById('incoming-progress-wrap').classList.remove('hidden');
+            incomingRxState.startTime = performance.now();
+
+            if (incomingRxState.transport === 'broadcast') {
+                meshChannel.postMessage({
+                    type: 'BC_ACCEPT_FILE',
+                    targetId: incomingRxState.senderId,
+                    senderId: myPeerId
+                });
+                saveCompletedBlobToVault(incomingRxState.blobData, incomingRxState);
+            } else if (incomingRxState.transport === 'webrtc' && incomingRxState.channel) {
+                incomingRxState.channel.send(JSON.stringify({ type: 'FILE_ACCEPTED' }));
+            }
+        });
+
+        function receiveBinaryChunk(arrayBuffer) {
+            if (!incomingRxState) return;
+            incomingRxState.chunks.push(arrayBuffer);
+            incomingRxState.receivedBytes += arrayBuffer.byteLength;
+
+            const pct = Math.min(100, Math.round((incomingRxState.receivedBytes / Math.max(1, incomingRxState.fileSize)) * 100));
+            const elapsedSec = Math.max(0.1, (performance.now() - incomingRxState.startTime) / 1000);
+            const mbps = (incomingRxState.receivedBytes / (1024 * 1024)) / elapsedSec;
+
+            document.getElementById('incoming-progress-bar').style.width = `${pct}%`;
+            document.getElementById('incoming-progress-pct').textContent = `${pct}%`;
+            document.getElementById('incoming-speed-label').textContent = `Receiving • ${mbps.toFixed(1)} MB/s`;
+        }
+
+        function finalizeReassembledWebRTCFile() {
+            if (!incomingRxState) return;
+            const blob = new Blob(incomingRxState.chunks, { type: incomingRxState.fileType || 'application/octet-stream' });
+            saveCompletedBlobToVault(blob, incomingRxState);
+        }
+
+        function saveCompletedBlobToVault(blob, meta) {
+            sfx.complete();
+            document.getElementById('incoming-modal').classList.add('hidden');
+
+            const url = URL.createObjectURL(blob);
+            receivedFiles.unshift({
+                name: meta.fileName,
+                size: meta.fileSize,
+                from: meta.senderName,
+                blob: blob,
+                url: url,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+
+            const badge = document.getElementById('vault-badge');
+            badge.textContent = receivedFiles.length;
+            badge.classList.remove('hidden');
+
+            saveOrShareFileOnDevice(blob, meta.fileName, false);
+            showToast(`Received "${meta.fileName}" — also available in Vault`, 'emerald');
+            incomingRxState = null;
+        }
+
+        async function initiateRealTransferToPeer(peer) {
+            if (stagedFiles.length === 0) return;
+            const filesQueue = [...stagedFiles];
+
+            for (const file of filesQueue) {
+                if (peer.transport === 'broadcast' && meshChannel) {
+                    peer.progress = 35;
+                    renderPeers();
+                    meshChannel.postMessage({
+                        type: 'BC_OFFER_FILE',
+                        targetId: peer.id,
+                        senderId: myPeerId,
+                        senderName: myDeviceName,
+                        senderOs: localInfo.os,
+                        fileName: file.name,
+                        fileSize: file.size,
+                        fileType: file.type,
+                        blobData: file
+                    });
+                    showToast(`Waiting for ${peer.name} to accept "${file.name}"...`, 'sky');
+                } else if (peer.transport === 'webrtc' && peer.channel && peer.channel.readyState === 'open') {
+                    await streamFileOverWebRTC(peer, file);
+                } else {
+                    showToast(`Connection to ${peer.name} is closed`, 'rose');
+                }
+            }
+            stagedFiles = [];
+            updateStagedUI();
+        }
+
+        function completeBroadcastSenderUI(peerId) {
+            const peer = peers.find(p => p.id === peerId);
+            if (!peer) return;
+            peer.progress = 100;
+            sfx.complete();
+            renderPeers();
+            showToast(`Delivered to ${peer.name} ✓`, 'emerald');
+            setTimeout(() => {
+                peer.progress = 0;
+                peer.status = 'Delivered ✓';
+                renderPeers();
+            }, 1400);
+        }
+
+        async function streamFileOverWebRTC(peer, file) {
+            const channel = peer.channel;
+            channel.bufferedAmountLowThreshold = 256 * 1024;
+
+            const acceptedPromise = new Promise((resolve) => { pendingAcceptResolver = resolve; });
+            channel.send(JSON.stringify({
+                type: 'FILE_OFFER',
+                senderId: myPeerId,
+                senderName: myDeviceName,
+                senderOs: localInfo.os,
+                fileName: file.name,
+                fileSize: file.size,
+                fileType: file.type || 'application/octet-stream'
+            }));
+
+            const statusEl = document.getElementById(`status-${peer.id}`);
+            if (statusEl) statusEl.textContent = 'Awaiting Accept...';
+
+            const accepted = await acceptedPromise;
+            pendingAcceptResolver = null;
+            if (!accepted) {
+                showToast(`${peer.name} declined "${file.name}"`, 'rose');
+                if (statusEl) statusEl.textContent = 'Declined';
+                return;
+            }
+
+            const CHUNK_SIZE = 64 * 1024;
+            let offset = 0;
+            const startTime = performance.now();
+
+            while (offset < file.size) {
+                if (channel.bufferedAmount > 1024 * 1024) {
+                    await new Promise((resolve) => {
+                        channel.onbufferedamountlow = () => {
+                            channel.onbufferedamountlow = null;
+                            resolve();
+                        };
+                    });
+                }
+
+                const slice = file.slice(offset, offset + CHUNK_SIZE);
+                const buffer = await slice.arrayBuffer();
+                channel.send(buffer);
+                offset += buffer.byteLength;
+
+                const pct = Math.min(100, Math.round((offset / Math.max(1, file.size)) * 100));
+                peer.progress = pct;
+                const elapsed = Math.max(0.1, (performance.now() - startTime) / 1000);
+                const speed = ((offset / (1024 * 1024)) / elapsed).toFixed(1);
+
+                const ring = document.getElementById(`ring-${peer.id}`);
+                const st = document.getElementById(`status-${peer.id}`);
+                if (ring) {
+                    ring.style.strokeDashoffset = 213.6 - (pct / 100) * 213.6;
+                    ring.setAttribute('stroke', '#38bdf8');
+                }
+                if (st) st.textContent = `${pct}% • ${speed} MB/s`;
+            }
+
+            channel.send(JSON.stringify({ type: 'FILE_EOF' }));
+            sfx.complete();
+            showToast(`Sent "${file.name}" to ${peer.name}`, 'emerald');
+            setTimeout(() => {
+                peer.progress = 0;
+                peer.status = 'Delivered ✓';
+                renderPeers();
+            }, 1500);
+        }
+
+        /*************************************************************************
+         * 9. CAMERA QR SCANNER (Native Android BarcodeDetector API + Fallback)
+         *************************************************************************/
+        let activeVideoStream = null;
+        let qrScanTarget = null;
+
+        async function startCameraScanner(targetType) {
+            qrScanTarget = targetType;
+            const wrap = document.getElementById('camera-scanner-wrap');
+            const video = document.getElementById('qr-video');
+            const statusLabel = document.getElementById('scanner-status-label');
+            wrap.classList.remove('hidden');
+            wrap.classList.add('flex');
+
+            const nativeDetector = ('BarcodeDetector' in window)
+                ? new BarcodeDetector({ formats: ['qr_code'] })
+                : null;
+
+            try {
+                activeVideoStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
+                });
+                video.srcObject = activeVideoStream;
+                await video.play();
+
+                statusLabel.textContent = nativeDetector
+                    ? 'Scanning QR (Native Android Hardware Detector)...'
+                    : 'Camera active (Or use Copy/Paste Token below)...';
+
+                const scanLoop = async () => {
+                    if (!activeVideoStream) return;
+                    if (video.readyState === video.HAVE_ENOUGH_DATA && nativeDetector) {
+                        try {
+                            const codes = await nativeDetector.detect(video);
+                            if (codes && codes.length > 0 && codes[0].rawValue) {
+                                const raw = codes[0].rawValue;
+                                sfx.sonar();
+                                stopCameraScanner();
+                                if (qrScanTarget === 'offer') {
+                                    document.getElementById('sdp-offer-in').value = raw;
+                                    createJoinerAnswer(raw);
+                                } else {
+                                    document.getElementById('sdp-answer-in').value = raw;
+                                    completeHostHandshake(raw);
+                                }
+                                return;
+                            }
+                        } catch (e) {}
+                    }
+                    requestAnimationFrame(scanLoop);
+                };
+                requestAnimationFrame(scanLoop);
+            } catch (err) {
+                wrap.classList.add('hidden');
+                showToast('Camera blocked or unavailable. Use Copy/Paste Token.', 'rose');
+            }
+        }
+
+        function stopCameraScanner() {
+            if (activeVideoStream) {
+                activeVideoStream.getTracks().forEach(t => t.stop());
+                activeVideoStream = null;
+            }
+            const wrap = document.getElementById('camera-scanner-wrap');
+            wrap.classList.add('hidden');
+            wrap.classList.remove('flex');
+        }
+
+        /*************************************************************************
+         * 10. BUILT-IN APK REPOSITORY & SCRIPT GENERATOR
+         *************************************************************************/
+        function getCleanSelfHtmlSource() {
+            return '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        }
+
+        function generateApkRepoFiles() {
+            const pkgJson = JSON.stringify({
+                name: "aetherdrop-offline",
+                version: "1.0.0",
+                description: "100% Offline Cross-Platform WebRTC File Sharing APK",
+                private: true,
+                dependencies: {
+                    "@capacitor/android": "^6.0.0",
+                    "@capacitor/cli": "^6.0.0",
+                    "@capacitor/core": "^6.0.0"
+                }
+            }, null, 2);
+
+            const capConfig = JSON.stringify({
+                appId: "com.aetherdrop.offline",
+                appName: "AetherDrop",
+                webDir: "www",
+                bundledWebRuntime: false,
+                server: { androidScheme: "https" }
+            }, null, 2);
+
+            const workflowYml = `name: Build AetherDrop Android APK
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Capacitor & Generate Android Project
+        run: |
+          npm install
+          npx cap add android || true
+          npx cap sync android
+
+      - name: Patch AndroidManifest.xml for Offline Hotspot WebRTC & Camera
+        run: |
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          if ! grep -q "android.permission.CAMERA" "$MANIFEST"; then
+            sed -i 's/<application/<uses-permission android:name="android.permission.CAMERA" \\/>\\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" \\/>\\n    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" \\/>\\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" \\/>\\n    <application/' "$MANIFEST"
+          fi
+
+      - name: Compile Debug APK via Gradle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload Ready-to-Install AetherDrop.apk Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AetherDrop-Android-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+`;
+
+            const readmeMd = `# AetherDrop — Offline Android APK Build Repository
+
+## How to Get Your APK in 2 Minutes (Zero Android Studio Needed)
+1. Upload all files in this folder to a new **GitHub Repository**.
+2. Click the **Actions** tab on your GitHub repository.
+3. Select the **Build AetherDrop Android APK** workflow run and download **AetherDrop-Android-APK.zip**!
+`;
+
+            const setupSh = `#!/usr/bin/env bash
+set -e
+echo "Creating AetherDrop Capacitor Android APK project..."
+mkdir -p www .github/workflows
+cat << 'EOF' > package.json
+${pkgJson}
+EOF
+cat << 'EOF' > capacitor.config.json
+${capConfig}
+EOF
+cat << 'EOF' > .github/workflows/build-apk.yml
+${workflowYml}
+EOF
+echo " Place your index.html inside ./www/index.html, then push to GitHub!"
+`;
+
+            return {
+                pkgJson,
+                capConfig,
+                workflowYml,
+                readmeMd,
+                setupSh,
+                indexHtml: getCleanSelfHtmlSource()
+            };
+        }
+
+        function openApkModal() {
+            const files = generateApkRepoFiles();
+            document.getElementById('apk-script-preview').textContent = files.setupSh;
+            document.getElementById('apk-modal').classList.remove('hidden');
+        }
+
+        document.getElementById('btn-apk-builder').addEventListener('click', openApkModal);
+        document.getElementById('btn-empty-apk').addEventListener('click', openApkModal);
+        document.getElementById('btn-close-apk').addEventListener('click', () => document.getElementById('apk-modal').classList.add('hidden'));
+        document.getElementById('btn-close-apk-bottom').addEventListener('click', () => document.getElementById('apk-modal').classList.add('hidden'));
+
+        document.getElementById('btn-download-apk-zip').addEventListener('click', () => {
+            const f = generateApkRepoFiles();
+            const zipBlob = OfflineZip.createZipBlob([
+                { path: 'www/index.html', content: f.indexHtml },
+                { path: 'package.json', content: f.pkgJson },
+                { path: 'capacitor.config.json', content: f.capConfig },
+                { path: '.github/workflows/build-apk.yml', content: f.workflowYml },
+                { path: 'setup-apk.sh', content: f.setupSh },
+                { path: 'README.md', content: f.readmeMd }
+            ]);
+            saveOrShareFileOnDevice(zipBlob, 'AetherDrop-APK-Repo.zip', false);
+            sfx.complete();
+            showToast('Downloaded AetherDrop-APK-Repo.zip!', 'emerald');
+        });
+
+        document.getElementById('btn-download-html').addEventListener('click', () => {
+            const htmlBlob = new Blob([getCleanSelfHtmlSource()], { type: 'text/html;charset=utf-8' });
+            saveOrShareFileOnDevice(htmlBlob, 'index.html', false);
+            showToast('Saved standalone index.html', 'sky');
+        });
+
+        document.getElementById('btn-download-sh').addEventListener('click', () => {
+            const f = generateApkRepoFiles();
+            const shBlob = new Blob([f.setupSh], { type: 'text/x-shellscript' });
+            saveOrShareFileOnDevice(shBlob, 'setup-apk.sh', false);
+            showToast('Saved setup-apk.sh script', 'emerald');
+        });
+
+        document.getElementById('btn-copy-sh').addEventListener('click', () => {
+            const el = document.getElementById('apk-script-preview');
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            document.execCommand('copy');
+            sel.removeAllRanges();
+            showToast('Copied APK setup script to clipboard', 'sky');
+        });
+
+        /*************************************************************************
+         * 11. UI EVENTS & CONTROLS
+         *************************************************************************/
+        function stageFiles(filesArray, notify = true) {
+            if (!filesArray || filesArray.length === 0) return;
+            stagedFiles = [...stagedFiles, ...filesArray];
+            sfx.sonar();
+            updateStagedUI();
+            renderPeers();
+
+            if (selectedPeerForPick) {
+                const target = selectedPeerForPick;
+                selectedPeerForPick = null;
+                initiateRealTransferToPeer(target);
+            } else if (notify) {
+                showToast(`Staged ${filesArray.length} file(s)`, 'sky');
+            }
+        }
+
+        function updateStagedUI() {
+            const bar = document.getElementById('staged-files-bar');
+            if (stagedFiles.length === 0) {
+                bar.classList.add('hidden');
+                return;
+            }
+            bar.classList.remove('hidden');
+            const totalBytes = stagedFiles.reduce((acc, f) => acc + f.size, 0);
+            document.getElementById('staged-summary-title').textContent =
+                stagedFiles.length === 1 ? stagedFiles[0].name : `${stagedFiles.length} files staged`;
+            document.getElementById('staged-summary-size').textContent = formatBytes(totalBytes);
+        }
+
+        function handlePeerClick(peer) {
+            if (stagedFiles.length === 0) {
+                selectedPeerForPick = peer;
+                document.getElementById('file-input').click();
+            } else {
+                initiateRealTransferToPeer(peer);
+            }
+        }
+
+        document.getElementById('center-node-btn').addEventListener('click', () => {
+            selectedPeerForPick = null;
+            document.getElementById('file-input').click();
+        });
+        document.getElementById('btn-add-more-files').addEventListener('click', () => document.getElementById('file-input').click());
+        document.getElementById('btn-clear-staged').addEventListener('click', () => {
+            stagedFiles = [];
+            updateStagedUI();
+            renderPeers();
+        });
+        document.getElementById('file-input').addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                stageFiles(Array.from(e.target.files));
+                e.target.value = '';
+            }
+        });
+
+        // Global Drag & Drop
+        window.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const d = document.getElementById('drop-overlay');
+            d.classList.remove('hidden');
+            d.classList.add('flex');
+        });
+        window.addEventListener('dragleave', (e) => {
+            if (e.relatedTarget === null) document.getElementById('drop-overlay').classList.add('hidden');
+        });
+        window.addEventListener('drop', (e) => {
+            e.preventDefault();
+            document.getElementById('drop-overlay').classList.add('hidden');
+            if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+                stageFiles(Array.from(e.dataTransfer.files));
+            }
+        });
+
+        // Pairing Modal
+        function openPairingModal() {
+            document.getElementById('pairing-modal').classList.remove('hidden');
+            createHostOffer();
+        }
+        document.getElementById('btn-open-connect').addEventListener('click', openPairingModal);
+        document.getElementById('btn-empty-connect').addEventListener('click', openPairingModal);
+        document.getElementById('btn-close-pairing').addEventListener('click', () => {
+            stopCameraScanner();
+            document.getElementById('pairing-modal').classList.add('hidden');
+        });
+
+        // Guide Modal
+        document.getElementById('btn-how-it-works').addEventListener('click', () => document.getElementById('guide-modal').classList.remove('hidden'));
+        document.getElementById('btn-close-guide').addEventListener('click', () => document.getElementById('guide-modal').classList.add('hidden'));
+        document.getElementById('btn-guide-to-pair').addEventListener('click', () => {
+            document.getElementById('guide-modal').classList.add('hidden');
+            openPairingModal();
+        });
+
+        // Pairing Tabs
+        const tabHost = document.getElementById('tab-host');
+        const tabJoin = document.getElementById('tab-join');
+        const panelHost = document.getElementById('panel-host');
+        const panelJoin = document.getElementById('panel-join');
+
+        tabHost.addEventListener('click', () => {
+            stopCameraScanner();
+            tabHost.classList.add('active');
+            tabJoin.classList.remove('active');
+            panelHost.classList.remove('hidden');
+            panelJoin.classList.add('hidden');
+        });
+
+        tabJoin.addEventListener('click', () => {
+            stopCameraScanner();
+            tabJoin.classList.add('active');
+            tabHost.classList.remove('active');
+            panelJoin.classList.remove('hidden');
+            panelJoin.classList.add('hidden');
+        });
+
+        function copyField(id, label) {
+            const el = document.getElementById(id);
+            if (!el || !el.value) return;
+            el.select();
+            document.execCommand('copy');
+            showToast(`${label} copied`, 'sky');
+        }
+        document.getElementById('btn-copy-offer').addEventListener('click', () => copyField('sdp-offer-out', 'Offer Token'));
+        document.getElementById('btn-copy-answer').addEventListener('click', () => copyField('sdp-answer-out', 'Answer Token'));
+        document.getElementById('btn-regenerate-offer').addEventListener('click', createHostOffer);
+
+        document.getElementById('btn-generate-answer').addEventListener('click', () => {
+            const val = document.getElementById('sdp-offer-in').value.trim();
+            if (!val) return showToast('Paste or scan the Host Offer token first', 'rose');
+            createJoinerAnswer(val);
+        });
+
+        document.getElementById('btn-complete-handshake').addEventListener('click', () => {
+            const val = document.getElementById('sdp-answer-in').value.trim();
+            if (!val) return showToast('Paste or scan the Answer token from Device B', 'rose');
+            completeHostHandshake(val);
+        });
+
+        document.getElementById('btn-scan-offer-qr').addEventListener('click', () => startCameraScanner('offer'));
+        document.getElementById('btn-scan-answer-qr').addEventListener('click', () => startCameraScanner('answer'));
+        document.getElementById('btn-stop-camera').addEventListener('click', stopCameraScanner);
+
+        // Rename Device
+        document.getElementById('btn-rename-self').addEventListener('click', () => {
+            const input = document.getElementById('prompt-input');
+            input.value = myDeviceName;
+            document.getElementById('prompt-modal').classList.remove('hidden');
+            input.focus();
+        });
+        document.getElementById('btn-prompt-cancel').addEventListener('click', () => document.getElementById('prompt-modal').classList.add('hidden'));
+        document.getElementById('btn-prompt-confirm').addEventListener('click', () => {
+            const val = document.getElementById('prompt-input').value.trim();
+            if (val) {
+                myDeviceName = val;
+                localStorage.setItem('aetherdrop_real_name', myDeviceName);
+                updateSelfUI();
+                broadcastHello();
+                showToast(`Renamed to "${myDeviceName}"`, 'emerald');
+            }
+            document.getElementById('prompt-modal').classList.add('hidden');
+        });
+
+        // Received Vault Modal with Native Android Share / Save Support
+        document.getElementById('btn-vault').addEventListener('click', () => {
+            const list = document.getElementById('vault-list');
+            if (receivedFiles.length === 0) {
+                list.innerHTML = `<div style="padding:2rem 0; text-align:center; color:#64748b; font-size:0.75rem;">No files received yet in this session.</div>`;
+            } else {
+                list.innerHTML = '';
+                receivedFiles.forEach((f) => {
+                    const row = document.createElement('div');
+                    row.className = 'sub-box flex items-center justify-between gap-2';
+                    row.innerHTML = `
+                        <div class="min-w-0">
+                            <p class="truncate" style="font-size:0.78rem; font-weight:700;">${f.name}</p>
+                            <p class="font-mono" style="font-size:0.65rem; color:#94a3b8;">${formatBytes(f.size)} • From ${f.from} • ${f.time}</p>
+                        </div>
+                        <div class="flex gap-1.5 shrink-0">
+                            <button class="btn btn-emerald btn-share-vault" style="padding:0.35rem 0.65rem;">Share / App</button>
+                            <button class="btn btn-primary btn-save-vault" style="padding:0.35rem 0.65rem;">Save</button>
+                        </div>
+                    `;
+                    row.querySelector('.btn-share-vault').addEventListener('click', () => saveOrShareFileOnDevice(f.blob, f.name, true));
+                    row.querySelector('.btn-save-vault').addEventListener('click', () => saveOrShareFileOnDevice(f.blob, f.name, false));
+                    list.appendChild(row);
+                });
+            }
+            document.getElementById('vault-modal').classList.remove('hidden');
+        });
+        document.getElementById('btn-close-vault').addEventListener('click', () => document.getElementById('vault-modal').classList.add('hidden'));
+
+        window.onload = () => {
+            updateSelfUI();
+            updateConnectionHeader();
+            renderPeers();
+        };
+    </script>
+</body>
+</html>
+```
