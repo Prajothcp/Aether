@@ -1,0 +1,9 @@
+{
+  "appId": "com.aetherdrop.p2p",
+  "appName": "AetherDrop",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": true
+  }
+}
